@@ -1,10 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotation Visualizer</title>
+    <script type="module" src="3d_rotation_script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .input-section {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .input-section label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-section input {
+            width: 200px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        #results {
+            margin-left: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 300px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        .result-item {
+            margin-bottom: 10px;
+        }
+        .copy-icon {
+            width: 16px;
+            height: 16px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .copy-icon::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%229%22 y=%229%22 width=%2213%22 height=%2213%22 rx=%222%22 ry=%222%22%3E%3C/rect%3E%3Cpath d=%22M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%22/%3E%3C/svg%3E');
+        }
+        #visualization {
+            width: 600px;
+            height: 400px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .main-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to my website!</h1>
+    <div id="app">
+        <h1>Rotation Visualizer</h1>
+        <div class="main-container">
+            <div class="input-section">
+                <h3>Enter Rotation Parameters</h3>
+                <div>
+                    <label for="euler">Euler Angles (roll, pitch, yaw in degrees):</label>
+                    <input type="text" id="euler" placeholder="e.g., 45, 30, 60">
+                </div>
+                <div>
+                    <label for="quaternion">Quaternion (x, y, z, w):</label>
+                    <input type="text" id="quaternion" placeholder="e.g., 0.5, 0.5, 0.5, 0.5">
+                </div>
+                <div>
+                    <label for="axisAngle">Axis-Angle (x, y, z, angle in degrees):</label>
+                    <input type="text" id="axisAngle" placeholder="e.g., 1, 0, 0, 90">
+                </div>
+                <button onclick="computeAndVisualize()">Visualize</button>
+            </div>
+            <div id="results">
+                <h3>Computed Rotations</h3>
+                <div class="result-item" id="eulerResult">
+                    <strong>Euler Angles (roll, pitch, yaw):</strong><br>
+                    <span></span> 
+                    <button class="copy-icon" onclick="copyToClipboard('eulerResult')"></button>
+                </div>
+                <div class="result-item" id="quaternionResult">
+                    <strong>Quaternion (x, y, z, w):</strong><br>
+                    <span></span> 
+                    <button class="copy-icon" onclick="copyToClipboard('quaternionResult')"></button>
+                </div>
+                <div class="result-item" id="axisAngleResult">
+                    <strong>Axis-Angle (x, y, z, angle):</strong><br> 
+                    <span></span> 
+                    <button class="copy-icon" onclick="copyToClipboard('axisAngleResult')"></button>
+                </div>
+            </div>
+        </div>
+        <div id="visualization"></div>
+    </div>
 </body>
 </html>
-
